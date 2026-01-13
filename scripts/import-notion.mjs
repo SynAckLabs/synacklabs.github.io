@@ -135,7 +135,7 @@ async function getBlogPosts() {
         // CAMBIO 2: Buscamos nuestra "marca" de Notion y la convertimos en el corte de Hugo
         // Si escribes "---more---" en Notion, aquí se convertirá en el botón de leer más
         if (mdContent.includes("---more---")) {
-            mdContent = mdContent.replace("---more---", "");
+          mdContent = mdContent.replace("---more---", "");
         } else {
             // Opcional: Si se te olvida poner la marca, cortamos automático tras 300 caracteres
             // Descomenta la siguiente línea si quieres corte automático siempre:
