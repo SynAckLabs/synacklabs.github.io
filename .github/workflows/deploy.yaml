@@ -1,0 +1,66 @@
+name: Desplegar Blog SynAckLabs
+
+on:
+  push:
+    branches:
+      - main  # O 'master', comprueba en qué rama estás
+  workflow_dispatch: # Permite darle al botón manual en GitHub
+
+# Permisos para que el bot pueda publicar en Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive # Importante para bajar el tema
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias del Script
+        run: npm ci
+
+      - name: Ejecutar Script de Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: node scripts/import-notion.mjs
+
+      - name: Configurar Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.120.0'
+          extended: true
+
+      - name: Construir sitio con Hugo
+        run: hugo --minify
+
+      - name: Subir artefacto para despliegue
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Desplegar a GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

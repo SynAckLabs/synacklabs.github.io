@@ -1,0 +1,60 @@
+baseURL = "https://synacklabs.github.io/"
+languageCode = "es-es"
+theme = "re-terminal"
+pagination.pagerSize = 5
+
+[params]
+  # Carpeta donde guarda el script los posts (NO CAMBIAR)
+  contentTypeName = "posts"
+
+  # Colores disponibles: ["orange", "blue", "red", "green", "pink", "paper"]
+  # "green" queda muy hacker, "pink" o "red" para red team, "blue" para blue team.
+  themeColor = "pink"
+
+  # Mostrar menú
+  showMenuItems = 2
+  showLanguageSelector = false
+  fullWidthTheme = false
+  centerTheme = true 
+  autoCover = true
+  showLastUpdated = true
+
+[languages]
+  [languages.es]
+    languageName = "Español"
+    weight = 1
+    
+    [languages.es.params]
+      title = "SynAckLabs"
+      subtitle = "Research. Exploit. Detect. | Red Team vs Blue Team"
+      owner = "SynAckLabs"
+      keywords = "cybersecurity, hacking, red team, blue team, ciberseguridad"
+      copyright = "SynAckLabs"
+      
+      # Traducciones al español de la interfaz
+      menuMore = "Ver más"
+      readMore = "Leer acceso root..."
+      readOtherPosts = "Otros logs"
+      newerPosts = "Logs recientes"
+      olderPosts = "Logs antiguos"
+      missingContentMessage = "404: Payload not found..."
+      missingBackButtonLabel = "Volver a localhost"
+      minuteReadingTime = "min lectura"
+      words = "palabras"
+
+    [languages.es.params.logo]
+      # Esto es lo que sale arriba a la izquierda. El :~# simula ser root
+      logoText = "root@SynAckLabs:~#" 
+      logoHomeLink = "/"
+
+    [languages.es.menu]
+      [[languages.es.menu.main]]
+        identifier = "about"
+        name = "Whoami"
+        url = "/about"
+      
+      [[languages.es.menu.main]]
+        identifier = "posts"
+        name = "/var/logs" # Un nombre friki para el blog
+        url = "/posts"
+
