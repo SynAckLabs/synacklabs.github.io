@@ -43,7 +43,7 @@ jobs:
       - name: Configurar Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.120.0'
+          hugo-version: 'latest'
           extended: true
 
       - name: Construir sitio con Hugo
