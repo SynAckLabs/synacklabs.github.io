@@ -19,8 +19,10 @@ Nuestro objetivo no es solo romper cosas, sino entender cómo se rompen para pro
 
 ### >_ El Equipo
 
-#### 🔴 Ismael Laya Martínez (https://www.linkedin.com/in/ismael-laya/)
+#### 🔴 Ismael Laya Martínez
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect_Ismael-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ismael-laya/)
 
-#### 🔵 Khaled El Modden (https://www.linkedin.com/in/khaled-e-4a28b1141/)
+#### 🔵 Khaled El Modden
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect_Khaled-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/khaled-e-4a28b1141/)
 
 ---
