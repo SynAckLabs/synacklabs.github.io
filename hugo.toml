@@ -1,5 +1,6 @@
 baseURL = "https://synacklabs.github.io/"
 languageCode = "es-es"
+defaultContentLanguage = "es"
 theme = "re-terminal"
 pagination.pagerSize = 5
 
