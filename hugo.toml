@@ -5,6 +5,7 @@ theme = "re-terminal"
 pagination.pagerSize = 5
 
 [params]
+  # Carpeta donde guarda el script los posts (NO CAMBIAR)
   contentTypeName = "posts"
 
   # Colores disponibles: ["orange", "blue", "red", "green", "pink", "paper"]
@@ -58,3 +59,7 @@ pagination.pagerSize = 5
         name = "/var/logs" 
         url = "/posts"
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

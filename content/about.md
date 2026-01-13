@@ -19,10 +19,20 @@ Nuestro objetivo no es solo romper cosas, sino entender cómo se rompen para pro
 
 ### >_ El Equipo
 
-#### 🔴 Ismael Laya Martínez
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect_Ismael-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ismael-laya/)
+<div style="display: flex; align-items: center; margin-top: 1.5em; margin-bottom: 0.5em;">
+  <h4 style="margin: 0; margin-right: 10px;">🔴 Ismael Laya Martínez</h4>
+  
+  <a href="https://www.linkedin.com/in/ismael-laya/" target="_blank" style="display: flex; align-items: center;">
+    <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg" alt="LinkedIn" style="height: 24px; width: auto;">
+  </a>
+</div>
 
-#### 🔵 Khaled El Modden
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect_Khaled-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/khaled-e-4a28b1141/)
+<div style="display: flex; align-items: center; margin-top: 1em; margin-bottom: 0.5em;">
+  <h4 style="margin: 0; margin-right: 10px;">🔵 Khaled El Modden</h4>
+  
+  <a href="https://www.linkedin.com/in/khaled-e-4a28b1141/" target="_blank" style="display: flex; align-items: center;">
+    <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg" alt="LinkedIn" style="height: 24px; width: auto;">
+  </a>
+</div>
 
 ---
