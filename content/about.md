@@ -1,5 +1,5 @@
 ---
-title: "Whoami"
+title: "Whoweare"
 hidemeta: true
 layout: "about"
 ---
@@ -11,7 +11,7 @@ layout: "about"
 
 ### >_ Misión
 
-**SynAckLabs** es un espacio de investigación donde colisionan dos mundos: la ofensiva (**Red Team**) y la defensiva (**Blue Team**). 
+**SynAckLabs** es un espacio de investigación y aprendizaje donde colisionan dos mundos: la ofensiva (**Red Team**) y la defensiva (**Blue Team**). 
 
 Nuestro objetivo no es solo romper cosas, sino entender cómo se rompen para protegerlas mejor (o romperlas con más estilo).
 
@@ -19,8 +19,8 @@ Nuestro objetivo no es solo romper cosas, sino entender cómo se rompen para pro
 
 ### >_ El Equipo
 
-#### 🔴 Ismael Laya Martínez
+#### 🔴 Ismael Laya Martínez (https://www.linkedin.com/in/ismael-laya/)
 
-#### 🔵 Khaled El Modden
+#### 🔵 Khaled El Modden (https://www.linkedin.com/in/khaled-e-4a28b1141/)
 
 ---
