@@ -27,7 +27,7 @@ pagination.pagerSize = 5
     
     [languages.es.params]
       title = "SynAckLabs"
-      subtitle = "Research. Exploit. Detect. | Red Team vs Blue Team"
+      subtitle = "| Red Team & Blue Team"
       owner = "SynAckLabs"
       keywords = "cybersecurity, hacking, red team, blue team, ciberseguridad"
       copyright = "SynAckLabs"
