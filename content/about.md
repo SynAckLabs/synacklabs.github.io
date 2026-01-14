@@ -43,14 +43,14 @@ Nuestro objetivo no es solo romper cosas, sino entender cómo se rompen para pro
   /* 1. ANIMACIÓN DE ESCRITURA (Typing) */
   .typing-container {
     display: inline-block;
-    background-color: #1e1e1e; /* Fondo oscuro para resaltar */
+    background-color: #3f002e00; /* Fondo oscuro para resaltar */
     padding: 2px 5px;
     border-radius: 4px;
     font-family: monospace;
   }
   
   .typing-effect {
-    border-right: 2px solid #00ff00; /* Cursor verde */
+    border-right: 2px solid #ff00ae; /* Cursor verde */
     white-space: nowrap;
     overflow: hidden;
     margin: 0;
@@ -62,7 +62,7 @@ Nuestro objetivo no es solo romper cosas, sino entender cómo se rompen para pro
   /* El cursor parpadea */
   @keyframes blink {
     from, to { border-color: transparent }
-    50% { border-color: #00ff00; }
+    50% { border-color: #e100ff; }
   }
 
   /* Las letras aparecen */
@@ -74,8 +74,8 @@ Nuestro objetivo no es solo romper cosas, sino entender cómo se rompen para pro
   /* 2. ANIMACIÓN GLITCH (Para los nombres) */
   .hacker-glitch:hover {
     animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
-    color: #ff0055; /* Cambia a rojo neón al pasar el ratón */
-    text-shadow: 2px 2px #00ff00; /* Sombra verde */
+    color: #ff00ff; /* Cambia a rojo neón al pasar el ratón */
+    text-shadow: 2px 2px #c444ff; /* Sombra verde */
   }
 
   @keyframes glitch {

@@ -1,10 +1,10 @@
 {{ define "main" }}
-  {{ with .Content }}
-    <div class="index-content">
-      {{ . }}
-    </div>
-  {{ end }}
-  
+  <div class="archive-header">
+    <h1 class="typing-effect" style="color: var(--primary); margin-bottom: 20px;">
+      >_ cd /var/{{ .Data.Plural }}/{{ .Title | lower }}
+    </h1>
+  </div>
+
   <div class="posts">
     {{ range $index, $element := .Paginator.Pages }}
       <article class="post on-list fade-in" style="animation-delay: {{ mul $index 0.1 }}s;">
@@ -42,7 +42,8 @@
   </div>
 
   <style>
-    /* 1. Animación de entrada suave (Fade-in) */
+    /* --- ANIMACIONES --- */
+
     .fade-in {
       opacity: 0;
       animation: fadeInList 0.6s ease-out forwards;
@@ -53,7 +54,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 2. Animación Glitch con tus colores personalizados */
     .hacker-glitch {
       display: inline-block;
       transition: color 0.2s;
@@ -61,8 +61,8 @@
 
     .hacker-glitch:hover {
       animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
-      color: #ff00cc; /* TU COLOR ROSA */
-      text-shadow: 2px 2px #9d00a9; /* TU SOMBRA VIOLETA */
+      color: #ff00cc;
+      text-shadow: 2px 2px #9d00a9;
     }
 
     @keyframes glitch {
@@ -72,6 +72,30 @@
       60% { transform: translate(2px, 2px); }
       80% { transform: translate(2px, -2px); }
       100% { transform: translate(0); }
+    }
+
+    /* --- ARREGLO DEL TYPING --- */
+    .typing-effect {
+      display: inline-block; /* <--- ESTO ES LA CLAVE: El ancho se ajusta al texto */
+      border-right: 3px solid #ff00ae; /* Cursor rosa */
+      white-space: nowrap;
+      overflow: hidden;
+      margin: 0;
+      width: 0; /* Empieza en 0 */
+      
+      /* Ajustamos la velocidad para que parezca teclear */
+      animation: typing 2s steps(30, end) forwards, blink 0.75s step-end infinite;
+    }
+
+    /* La animación ahora va del 0 al 100% del TEXTO, no de la pantalla */
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      from, to { border-color: transparent }
+      50% { border-color: #ff00ae; }
     }
   </style>
 {{ end }}

@@ -1,10 +1,15 @@
 {{ define "main" }}
+  
   {{ if .Content }}
-    <div class="index-content {{ if .Params.framed -}}framed{{- end -}}">
+    <div class="index-content typing-container">
       {{ .Content }}
     </div>
   {{ end }}
-  
+
+  <div class="home-banner fade-in" style="text-align: center; margin: 20px 0 40px 0;">
+    <img src="/images/banner.png" alt="SynAckLabs Banner" 
+         style="max-width: 50%; height: auto; border-radius: 4px; margin-left: auto; margin-right: auto; margin-top: 50px;">
+  </div>
   <div class="posts">
     {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
     {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
@@ -15,11 +20,11 @@
     {{ end }}
     {{ $paginator := .Paginate (where $PageContext.RegularPages "Type" $contentTypeName) }}
 
-    {{ range $paginator.Pages }}
-      <article class="post on-list">
+    {{ range $index, $element := $paginator.Pages }}
+      <article class="post on-list fade-in" style="animation-delay: {{ mul (add $index 2) 0.1 }}s;">
         
         <h1 class="post-title">
-          <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+          <a href="{{ .Permalink }}" class="hacker-glitch">{{ .Title | markdownify }}</a>
         </h1>
 
         <div class="post-meta">
@@ -45,11 +50,43 @@
             {{ end }}
           </span>
         {{ end }}
-
-        </article>
+      </article>
     {{ end }}
 
     {{ partial "pagination.html" . }}
   </div>
-{{ end }}
 
+  <style>
+    /* Animación de entrada suave para los posts */
+    .fade-in {
+      opacity: 0;
+      animation: fadeInList 0.6s ease-out forwards;
+      transform: translateY(10px);
+    }
+
+    @keyframes fadeInList {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Animación Glitch para los Títulos */
+    .hacker-glitch {
+      display: inline-block; /* Necesario para que transforme bien */
+      transition: color 0.2s;
+    }
+
+    .hacker-glitch:hover {
+      animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+      color: #ff00cc; /* Verde Hacker al pasar el ratón */
+      text-shadow: 2px 2px #9d00a9; /* Sombra Roja Cyberpunk */
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+  </style>
+{{ end }}

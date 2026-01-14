@@ -125,7 +125,7 @@ async function getBlogPosts() {
         if (props.Tags.multi_select) {
             tags = props.Tags.multi_select.map(tag => tag.name);
         }
-        
+        const postType = props.Type?.select?.name || "General";
         console.log(`📝 Procesando: ${title}`);
 
         const mdBlocks = await n2m.pageToMarkdown(page.id);
@@ -147,6 +147,7 @@ title: "${title}"
 date: ${date}
 author: "${author}"
 tags: [${tags.map(t => `"${t}"`).join(', ')}]
+categories: ["${postType}"]
 slug: "${slug}"
 draft: false
 ---

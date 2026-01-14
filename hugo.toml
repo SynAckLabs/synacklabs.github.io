@@ -13,7 +13,7 @@ pagination.pagerSize = 5
   themeColor = "pink"
 
   # Mostrar menú
-  showMenuItems = 2
+  showMenuItems = 5
   showLanguageSelector = false
   fullWidthTheme = false
   centerTheme = true 
@@ -34,7 +34,7 @@ pagination.pagerSize = 5
       
       # Traducciones al español de la interfaz
       menuMore = "Ver más"
-      readMore = "Leer acceso root..."
+      readMore = "Leer más..."
       readOtherPosts = "Otros logs"
       newerPosts = "Logs recientes"
       olderPosts = "Logs antiguos"
@@ -49,15 +49,32 @@ pagination.pagerSize = 5
       logoHomeLink = "/"
 
     [languages.es.menu]
+      # 1. El About
       [[languages.es.menu.main]]
         identifier = "about"
         name = "Whoweare"
         url = "/about"
+        weight = 1
       
+      # 2. SECCIÓN FILTROS (Nuevas)
+      [[languages.es.menu.main]]
+        identifier = "machines"
+        name = "/var/machines"   # Solo Máquinas
+        url = "/categories/machine"
+        weight = 2
+
+      [[languages.es.menu.main]]
+        identifier = "challenges"
+        name = "/var/challenges" # Solo Challenges
+        url = "/categories/challenge"
+        weight = 3
+
+      # 3. SECCIÓN "VER TODO" 
       [[languages.es.menu.main]]
         identifier = "posts"
-        name = "/var/logs" 
+        name = "/var/all_logs"   
         url = "/posts"
+        weight = 4
 
 [markup]
   [markup.goldmark]
