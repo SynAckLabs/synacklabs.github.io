@@ -6,7 +6,7 @@ layout: "about"
 
 ## root@SynAckLabs:~$ id
 <div class="typing-container">
-  <p class="typing-effect">uid=0(root) gid=0(root) groups=0(root) context=sys_u:system_r:init_t:s0</p>
+  <p class="typing-effect">uid=0(root) gid=0(root) groups=0(root)</p>
 </div>
 
 ---
