@@ -75,8 +75,16 @@ pagination.pagerSize = 5
         name = "/var/all_logs"   
         url = "/posts"
         weight = 4
+      [[languages.es.menu.main]]
+        identifier = "search"
+        name = "grep"
+        url = "/search"
+        weight = 5
 
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+
+[outputs]
+  home = ["HTML", "JSON"]

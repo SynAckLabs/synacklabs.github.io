@@ -1,0 +1,118 @@
+{{ define "main" }}
+<div class="post">
+  
+  <h1 class="post-title">{{ .Title | markdownify }}</h1>
+  <div class="post-meta">
+    {{ if .Date }}
+      <span class="post-date">{{ .Date.Format "2006-01-02" }}</span>
+    {{ end }}
+    {{ with .Params.Author }}
+      <span class="post-author">:: {{ . }}</span>
+    {{ end }}
+  </div>
+
+  {{ if .Params.tags }}
+  <span class="post-tags">
+    {{ range .Params.tags }}
+    #<a href="{{ (urls.JoinPath "tags" (urlize .) "/") | absLangURL }}">{{ . }}</a>&nbsp;
+    {{ end }}
+  </span>
+  {{ end }}
+
+  {{ if and .TableOfContents (gt (len .TableOfContents) 32) }}
+  <div class="toc-terminal">
+    <details open>
+      <summary>
+        <span style="color: #ff00cc;">root@SynAckLabs</span>:<span>~#</span> ./show_index.sh
+      </summary>
+      <div class="toc-content">
+        {{ .TableOfContents }}
+      </div>
+    </details>
+  </div>
+  {{ end }}
+
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+
+  <div class="pagination">
+    <div class="pagination__buttons">
+        {{ if .PrevInSection }}
+        <span class="button previous">
+            <a href="{{ .PrevInSection.Permalink }}">
+                <span class="button__icon">←</span>
+                <span class="button__text">{{ .PrevInSection.Title }}</span>
+            </a>
+        </span>
+        {{ end }}
+        {{ if .NextInSection }}
+        <span class="button next">
+            <a href="{{ .NextInSection.Permalink }}">
+                <span class="button__text">{{ .NextInSection.Title }}</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        {{ end }}
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .toc-terminal {
+    margin: 30px 0;
+    border: 1px solid #333;
+    background-color: #0d0d0d;
+    border-radius: 4px;
+    font-family: monospace;
+    max-width: 100%;
+  }
+
+  .toc-terminal summary {
+    background-color: #1a1a1a;
+    padding: 10px;
+    cursor: pointer;
+    list-style: none; /* Ocultar triángulo default */
+    font-weight: bold;
+    color: #ddd;
+    border-bottom: 1px solid #333;
+  }
+
+  .toc-terminal summary:hover {
+    background-color: #252525;
+  }
+
+  /* Ajustes de la lista del TOC generada por Hugo */
+  .toc-content {
+    padding: 15px;
+    font-size: 0.95rem;
+  }
+
+  .toc-content nav ul {
+    list-style: none;
+    padding-left: 10px;
+  }
+  
+  .toc-content nav ul li {
+    margin-bottom: 5px;
+  }
+
+  .toc-content nav ul li a {
+    text-decoration: none;
+    color: #888;
+    transition: color 0.2s;
+  }
+
+  .toc-content nav ul li a:hover {
+    color: #ff00cc; /* Tu rosa neón */
+    text-shadow: 0 0 5px #9d00a9;
+  }
+
+  /* Indentación para subsecciones (H3) */
+  .toc-content nav ul ul {
+    padding-left: 20px;
+    margin-top: 5px;
+  }
+</style>
+{{ end }}

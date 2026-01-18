@@ -1,0 +1,121 @@
+{{ define "main" }}
+<div class="search-container" style="max-width: 800px; margin: 0 auto;">
+    
+    <div class="search-box">
+        <span class="prompt">root@SynAckLabs:~# grep -i </span>
+        <input type="text" id="search-input" placeholder='"query..."' autocomplete="off">
+        <span class="cursor">_</span>
+    </div>
+
+    <div style="margin-bottom: 20px; color: #666; font-size: 0.8rem;">
+        // Searching in titles, tags & content...
+    </div>
+
+    <div id="search-results" class="results-terminal"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+
+<script>
+    let fuse;
+    const searchInput = document.getElementById('search-input');
+    const resultsContainer = document.getElementById('search-results');
+
+    // 1. Cargar índice JSON
+    fetch('/index.json')
+        .then(response => response.json())
+        .then(data => {
+            fuse = new Fuse(data, {
+                keys: ['title', 'tags', 'content'],
+                threshold: 0.3, // Sensibilidad
+                ignoreLocation: true,
+                minMatchCharLength: 3
+            });
+        });
+
+    // 2. Escuchar lo que escribes
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value;
+        resultsContainer.innerHTML = '';
+
+        if (query.length > 2 && fuse) {
+            const results = fuse.search(query);
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">> Error: process not found.</div>';
+                return;
+            }
+
+            results.forEach(result => {
+                const item = result.item;
+                // Recortar un poco el texto para la preview
+                let snippet = item.content.substring(0, 150) + "...";
+                
+                const html = `
+                    <div class="result-item fade-in">
+                        <h3 style="margin: 0 0 5px 0;">
+                            <a href="${item.permalink}" class="hacker-glitch">> ${item.title}</a>
+                        </h3>
+                        <div class="meta" style="font-size: 0.85rem; color: #888;">
+                            ${snippet}
+                        </div>
+                        <div style="margin-top:5px; font-size: 0.8rem; color: #ff00cc;">
+                           [ ${item.tags ? item.tags.join(" | ") : "LOG"} ]
+                        </div>
+                    </div>
+                `;
+                resultsContainer.innerHTML += html;
+            });
+        }
+    });
+</script>
+
+<style>
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: #0f0f0f;
+        padding: 15px;
+        border: 1px solid #333;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 1.2rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+    }
+
+    .prompt { color: #ff00cc; margin-right: 10px; white-space: nowrap; }
+    
+    #search-input {
+        background: transparent;
+        border: none;
+        color: #fff;
+        width: 100%;
+        font-family: inherit;
+        font-size: inherit;
+        outline: none;
+    }
+
+    /* Cursor parpadeante */
+    .cursor { animation: blink 1s infinite; color: #ff00cc; font-weight: bold;}
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .result-item {
+        margin-bottom: 25px;
+        padding: 15px;
+        border-left: 2px solid #333;
+        background: #111;
+        transition: all 0.2s;
+    }
+
+    .result-item:hover {
+        border-left: 4px solid #ff00cc;
+        background: #161616;
+    }
+
+    .no-results { color: #ff4444; font-family: monospace; }
+
+    .hacker-glitch { text-decoration: none; color: white; }
+    .hacker-glitch:hover { color: #ff00cc; text-shadow: 2px 2px #9d00a9; }
+</style>
+{{ end }}
