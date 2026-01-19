@@ -72,6 +72,7 @@
 </script>
 
 <style>
+    /* --- ESTILOS GENERALES (PC) --- */
     .search-box {
         display: flex;
         align-items: center;
@@ -81,7 +82,7 @@
         border-radius: 4px;
         font-family: monospace;
         font-size: 1.2rem;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
     .prompt { color: #ff00cc; margin-right: 10px; white-space: nowrap; }
@@ -96,7 +97,6 @@
         outline: none;
     }
 
-    /* Cursor parpadeante */
     .cursor { animation: blink 1s infinite; color: #ff00cc; font-weight: bold;}
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
@@ -114,8 +114,24 @@
     }
 
     .no-results { color: #ff4444; font-family: monospace; }
-
     .hacker-glitch { text-decoration: none; color: white; }
     .hacker-glitch:hover { color: #ff00cc; text-shadow: 2px 2px #9d00a9; }
+
+    /* --- AJUSTES PARA MÓVIL (La parte nueva) --- */
+    @media (max-width: 768px) {
+        .search-container {
+            /* AQUÍ ESTÁ EL TRUCO: Margen superior extra solo en móvil */
+            margin-top: 50px !important; 
+        }
+
+        .search-box {
+            font-size: 0.9rem; /* Letra un poco más pequeña para que quepa */
+            padding: 10px;
+        }
+
+        .prompt {
+            margin-right: 5px; /* Menos espacio en el prompt */
+        }
+    }
 </style>
-{{ end }}
+{{ end }}   

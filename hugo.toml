@@ -77,7 +77,7 @@ pagination.pagerSize = 5
         weight = 4
       [[languages.es.menu.main]]
         identifier = "search"
-        name = "grep"
+        name = "search"
         url = "/search"
         weight = 5
 
