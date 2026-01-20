@@ -1,8 +1,14 @@
 {{ define "main" }}
   <div class="archive-header">
-    <h1 class="typing-effect" style="color: var(--primary); margin-bottom: 20px;">
-      >_ cd {{ .Data.Plural }}/{{ .Title | lower }}
-    </h1>
+    {{ if eq (.Title | lower) "blue team vs red team" }}
+       <h1 class="typing-effect" style="color: #a700ff; margin-bottom: 20px; text-shadow: 0 0 10px #a700ff;">
+         >_ sudo purpleteam --mode=collaborative
+       </h1>
+    {{ else }}
+       <h1 class="typing-effect" style="color: var(--primary); margin-bottom: 20px;">
+         >_ cd {{ .Data.Plural }}/{{ .Title | lower }}
+       </h1>
+    {{ end }}
   </div>
 
   <div class="posts">

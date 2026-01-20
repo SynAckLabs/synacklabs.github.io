@@ -74,12 +74,17 @@ pagination.pagerSize = 5
         identifier = "posts"
         name = "/var/all_logs"   
         url = "/posts"
-        weight = 4
+        weight = 6
       [[languages.es.menu.main]]
         identifier = "search"
         name = "search"
         url = "/search"
         weight = 5
+      [[languages.es.menu.main]]
+        identifier = "redvsblue"
+        name = "BlueVsRed"  # El nombre que sale en la web
+        url = "/categories/blue-team-vs-red-team" 
+        weight = 4
 
 [markup]
   [markup.goldmark]
