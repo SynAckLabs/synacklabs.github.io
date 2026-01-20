@@ -69,12 +69,6 @@ pagination.pagerSize = 5
         url = "/categories/challenge"
         weight = 3
 
-      # 3. SECCIÓN "VER TODO" 
-      [[languages.es.menu.main]]
-        identifier = "posts"
-        name = "/var/all_logs"   
-        url = "/posts"
-        weight = 6
       [[languages.es.menu.main]]
         identifier = "search"
         name = "search"
@@ -82,7 +76,7 @@ pagination.pagerSize = 5
         weight = 5
       [[languages.es.menu.main]]
         identifier = "redvsblue"
-        name = "BlueVsRed"  # El nombre que sale en la web
+        name = "BlueVsRed"  
         url = "/categories/blue-team-vs-red-team" 
         weight = 4
 
