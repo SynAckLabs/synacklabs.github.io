@@ -118,8 +118,12 @@ async function getBlogPosts() {
         const title = props.Name.title[0]?.plain_text || 'Sin titulo';
         const slug = props.Slug.rich_text[0]?.plain_text || slugify(title, { lower: true });
         const date = props.Date.date?.start || new Date().toISOString().split('T')[0];
-        const author = props.Author.select?.name || 'Equipo';
         
+        let author = [];
+        if (props.Author.multi_select) {
+            author = props.Author.multi_select.map(tag => tag.name);
+        }
+
         // Manejo seguro de tags (si está vacío)
         let tags = [];
         if (props.Tags.multi_select) {
