@@ -85,5 +85,9 @@ pagination.pagerSize = 5
     [markup.goldmark.renderer]
       unsafe = true
 
+[author]
+  name = "SynAckLabs"
+  email = "admin@synacklabs.github.io"
+
 [outputs]
   home = ["HTML", "JSON"]
