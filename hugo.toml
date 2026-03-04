@@ -89,5 +89,11 @@ pagination.pagerSize = 5
   name = "SynAckLabs"
   email = "admin@synacklabs.github.io"
 
+[params.author]
+  # duplicate of [author] because newer Hugo versions no longer expose
+  # .Site.Author to templates.  The RSS override below uses these values.
+  name  = "SynAckLabs"
+  email = "admin@synacklabs.github.io"
+
 [outputs]
   home = ["HTML", "JSON"]
