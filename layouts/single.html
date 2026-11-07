@@ -1,6 +1,7 @@
 {{ define "main" }}
-<div class="post">
-  
+<div class="reading-progress"><div class="reading-progress__bar"></div></div>
+<div class="post post-enter">
+
   <h1 class="post-title">{{ .Title | markdownify }}</h1>
   <div class="post-meta">
     {{ if .Date }}
@@ -9,6 +10,7 @@
     {{ with .Params.Author }}
       <span class="post-author">:: {{ . }}</span>
     {{ end }}
+    {{ partial "badges.html" . }}
   </div>
 
   {{ if .Params.tags }}

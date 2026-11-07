@@ -1,0 +1,33 @@
+<!--
+  Insignias de Dificultad / Sistema Operativo para una página de post.
+  Se invoca con la palabra clave "partial" pasando este archivo y el contexto
+  del post (dentro de un range, el contexto "." es el post actual).
+
+  - Dificultad: se extrae del título, p.ej. "Craft (Medium)" -> "Medium".
+  - SO: se extrae de los tags, si "Windows" o "Linux" está presente.
+  Si no hay ninguno de los dos (p.ej. "Whoweare" o un challenge sin esos tags),
+  no se imprime nada.
+-->
+{{ $title := .Title }}
+{{ $diffMatches := findRE "(?i)\\((Easy|Medium|Hard|Insane)\\)" $title 1 }}
+{{ $difficulty := "" }}
+{{ if $diffMatches }}
+  {{ $difficulty = index $diffMatches 0 | strings.TrimPrefix "(" | strings.TrimSuffix ")" }}
+{{ end }}
+
+{{ $tags := .Params.tags }}
+{{ $os := "" }}
+{{ if $tags }}
+  {{ if in $tags "Windows" }}
+    {{ $os = "Windows" }}
+  {{ else if in $tags "Linux" }}
+    {{ $os = "Linux" }}
+  {{ end }}
+{{ end }}
+
+{{ if or $difficulty $os }}
+<span class="badges">
+  {{ if $os }}<span class="badge badge--os-{{ $os | lower }}">{{ $os }}</span>{{ end }}
+  {{ if $difficulty }}<span class="badge badge--difficulty-{{ $difficulty | lower }}">{{ $difficulty }}</span>{{ end }}
+</span>
+{{ end }}
