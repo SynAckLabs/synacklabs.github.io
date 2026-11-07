@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
 import slugify from 'slugify';
+import { extraCategoriesFor } from './lib/series.mjs';
 
 // --- CONFIGURACIÓN ---
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
@@ -151,7 +152,7 @@ title: "${title}"
 date: ${date}
 author: "${author}"
 tags: [${tags.map(t => `"${t}"`).join(', ')}]
-categories: ["${postType}"]
+categories: [${[postType, ...extraCategoriesFor(slug)].map(c => `"${c}"`).join(", ")}]
 slug: "${slug}"
 draft: false
 ---

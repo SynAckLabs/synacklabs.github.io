@@ -13,7 +13,7 @@ pagination.pagerSize = 5
   themeColor = "pink"
 
   # Mostrar menú
-  showMenuItems = 5
+  showMenuItems = 6
   showLanguageSelector = false
   fullWidthTheme = false
   centerTheme = true 
@@ -70,15 +70,21 @@ pagination.pagerSize = 5
         weight = 3
 
       [[languages.es.menu.main]]
+        identifier = "cpts"
+        name = "/var/cpts"       # Track CPTS Preparation (data/cpts.json)
+        url = "/categories/cpts-preparation"
+        weight = 4
+
+      [[languages.es.menu.main]]
         identifier = "search"
         name = "search"
         url = "/search"
-        weight = 5
+        weight = 6
       [[languages.es.menu.main]]
         identifier = "redvsblue"
         name = "BlueVsRed"  
         url = "/categories/blue-team-vs-red-team" 
-        weight = 4
+        weight = 5
 
 [markup]
   [markup.goldmark]

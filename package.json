@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "import:obsidian": "node scripts/import-obsidian.mjs",
+    "import:notion": "node scripts/import-notion.mjs"
+  },
   "name": "synacklabs.github.io",
   "lockfileVersion": 3,
   "requires": true,
